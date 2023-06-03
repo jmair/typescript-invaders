@@ -1,0 +1,19 @@
+{
+  "name": "es6-invaders",
+  "version": "1.0.0",
+  "description": "A Typescript implementation of a classic video game.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rimraf ./dist && mkdir dist && cp ./index.html ./dist/ && cp -r ./images ./dist/ && cp -r ./css ./dist/",
+    "build": "tsc --build ",
+    "serve": "npm run build && cd dist && npx static-server",
+    "clean": "tsc --build --clean"
+  },
+  "author": "Jerimiah Mair",
+  "license": "MIT",
+  "devDependencies": {
+    "rimraf": "^5.0.1",
+    "typescript": "^5.0.4"
+  }
+}

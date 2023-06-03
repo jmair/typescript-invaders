@@ -1,0 +1,74 @@
+html, body {
+  margin: 0;
+}
+
+body {
+  color: white;
+  background-color: #333;
+  font-family: 'Press Start 2P', sans-serif;
+}
+
+header {
+  margin: 24px 0 64px;
+}
+
+header, main{
+  text-align: center;
+}
+
+.invaders {
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+  padding: 12px;
+  background-color: #333;
+  border: 1px solid white;
+  border-radius: 12px;
+}
+
+.invaders:hover {
+  background-color: white;
+  color: black;
+  text-decoration: none;
+}
+
+main.canvas {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.logo {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.link {
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+canvas {
+  cursor: none;
+}
+
+.sites img {
+  width: 300px;
+  box-shadow: 0 0 24px black;
+  border: 2px solid white;
+  transition: border 500ms;
+  margin: 12px 0;
+}
+
+.sites img:hover {
+  box-shadow: none;
+  border: 2px solid red;
+}
+
+h2 {
+  line-height: 2;
+  margin-top: 48px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #aaa;
+}
