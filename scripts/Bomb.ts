@@ -14,7 +14,7 @@ class Bomb {
     ctx: CanvasRenderingContext2D,
     location: Position
   ) {
-    this.speed = 4;
+    this.speed = 1.5;
     this.direction = { x: 0, y: this.speed };
     this.options = {
       startPosition: location,

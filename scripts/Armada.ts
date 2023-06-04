@@ -42,7 +42,7 @@ class Armada {
     this.stride = 20;
     this.padding = 100;
     this.yShiftAmount = 32;
-    this.ticksPerShip = 1;
+    this.ticksPerShip = 2;
     this.gameOverCallback = gameOverCallback;
     this.allClearCallback = allClearCallback;
     this.initalPostions = [];

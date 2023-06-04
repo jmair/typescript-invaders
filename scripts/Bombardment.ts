@@ -13,8 +13,8 @@ class Bombardment {
   xOffset: number;
   yOffset: number;
   outpost: Outpost;
-  ticks: 0;
-  tickPerLaunch: 20;
+  ticks: number;
+  tickPerLaunch: number;
   bombs: Bomb[];
   killPlayer: () => void;
 
@@ -36,7 +36,7 @@ class Bombardment {
     this.yOffset = 32;
     this.outpost = outpost;
     this.ticks = 0;
-    this.tickPerLaunch = 20;
+    this.tickPerLaunch = 40;
     this.bombs = [];
 
     this.killPlayer = killPlayer;

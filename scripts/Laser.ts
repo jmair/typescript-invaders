@@ -25,7 +25,7 @@ class Laser {
       tag: 'laser',
       sheetSize: { w: 12, h: 24 },
       frameCount: 4,
-      ticksPerFrame: 6,
+      ticksPerFrame: 180,
     };
     this.sprite = new Sprite(imageCache, ctx, this.config);
     this.moving = false;

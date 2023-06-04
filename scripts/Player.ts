@@ -28,9 +28,9 @@ class Player {
       tag: 'hero',
       sheetSize: { w: 64, h: 24 },
       frameCount: 1,
-      ticksPerFrame: 1,
+      ticksPerFrame: 5,
     };
-    this.speed = 3;
+    this.speed = 4;
     this.padding = 100;
     this.sprite = new Sprite(imageCache, ctx, this.options);
   }
