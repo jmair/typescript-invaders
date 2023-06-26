@@ -3,53 +3,43 @@ import ImageCache from './ImageCache.js';
 import Sprite from './Sprite.js';
 
 class PlayerLives {
-  imageCache: ImageCache;
-  ctx: CanvasRenderingContext2D;
-  canvas: HTMLCanvasElement;
-  config: SpriteConfig;
-  maxLives: number;
-  sprites: Sprite[];
-  bottomMarginPx: number;
+  static #maxLives = 10;
+  static #bottomMarginPx = 64;
+  static #spriteConfig: SpriteConfig = {
+    tag: 'hero',
+    sheetSize: { w: 64, h: 24 },
+    frameCount: 1,
+    ticksPerFrame: 1,
+    startPosition: { x: 0, y: 0 },
+  };
+  #sprites: Sprite[] = [];
 
   constructor(
     imageCache: ImageCache,
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement
   ) {
-    this.imageCache = imageCache;
-    this.ctx = ctx;
-    this.canvas = canvas;
-    this.config = {
-      tag: 'hero',
-      sheetSize: { w: 64, h: 24 },
-      frameCount: 1,
-      ticksPerFrame: 1,
-      startPosition: { x: 0, y: 0 },
-    };
-    this.maxLives = 10;
-    this.sprites = [];
-    this.bottomMarginPx = 64;
-
-    for (let i = 1; i < this.maxLives + 1; i++) {
-      const sheetWidth = this.config.sheetSize.w;
+    for (let i = 1; i < PlayerLives.#maxLives + 1; i++) {
+      const sheetWidth = PlayerLives.#spriteConfig.sheetSize.w;
       const spacer = 8;
       const instanceX = (sheetWidth + spacer) * i;
 
-      const config = Object.assign({}, this.config, {
+      const config = Object.assign({}, PlayerLives.#spriteConfig, {
         startPosition: {
           x: instanceX,
-          y: this.canvas.height - this.bottomMarginPx,
+          y: canvas.height - PlayerLives.#bottomMarginPx,
         },
       });
 
-      this.sprites.push(new Sprite(this.imageCache, this.ctx, config));
+      this.#sprites.push(new Sprite(imageCache, ctx, config));
     }
   }
 
-  render = (lives: number) => {
-    const toRender = lives < this.maxLives ? lives : this.maxLives;
+  public render = (lives: number) => {
+    const toRender =
+      lives < PlayerLives.#maxLives ? lives : PlayerLives.#maxLives;
     for (let i = 1; i < toRender; i++) {
-      this.sprites[i].render();
+      this.#sprites[i].render();
     }
   };
 }
