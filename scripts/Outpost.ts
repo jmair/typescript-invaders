@@ -1,18 +1,15 @@
 import Base from './Base.js';
 
 class Outpost {
-  canvas: HTMLCanvasElement;
-  baseLocations: number[];
-  bases: Base[];
+  #bases: Base[] = [];
+  static #baseLocations = [250, 550, 850];
+  static #baseVerticalOffset = 300;
 
   constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-    this.canvas = canvas;
-    this.baseLocations = [250, 550, 850];
-    this.bases = [];
+    Outpost.#baseLocations.forEach((baseX) => {
+      const baseY = canvas.height - Outpost.#baseVerticalOffset;
 
-    this.baseLocations.forEach((baseX) => {
-      const baseY = this.canvas.height - 300;
-      this.bases.push(
+      this.#bases.push(
         new Base(ctx, {
           topLeft: { x: baseX, y: baseY },
           width: 20,
@@ -24,16 +21,18 @@ class Outpost {
     });
   }
 
-  removeBlock = (i: number, j: number, k: number) => {
-    this.bases[i].removeBlock(j, k);
+  get bases() {
+    return this.#bases;
+  }
+
+  public removeBlock = (i: number, j: number, k: number) => {
+    this.#bases[i].removeBlock(j, k);
   };
 
-  // bases = () => this.bases;
+  public reset = () => this.#bases.forEach((base) => base.init());
 
-  reset = () => this.bases.forEach((base) => base.init());
-
-  render = () => {
-    this.bases.forEach((base) => base.render());
+  public render = () => {
+    this.#bases.forEach((base) => base.render());
   };
 }
 
