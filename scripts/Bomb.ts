@@ -1,37 +1,41 @@
 import Sprite from './Sprite.js';
 import Position from '../types/Position.js';
-import SpriteConfig from '../types/SpriteConfig.js';
 import ImageCache from './ImageCache.js';
+import SpriteConfig from '../types/SpriteConfig.js';
 
 class Bomb {
-  speed: number;
-  direction: Position;
-  options: SpriteConfig;
-  sprite: Sprite;
+  #speed = 1.5;
+  #direction: Position;
+  #sprite: Sprite;
 
   constructor(
     imageCache: ImageCache,
     ctx: CanvasRenderingContext2D,
-    location: Position
+    startPosition: Position
   ) {
-    this.speed = 1.5;
-    this.direction = { x: 0, y: this.speed };
-    this.options = {
-      startPosition: location,
+    this.#direction = { x: 0, y: this.#speed };
+
+    const options: SpriteConfig = {
+      startPosition,
       tag: 'bomb',
       sheetSize: { w: 12, h: 32 },
       frameCount: 3,
       ticksPerFrame: 10,
     };
-    this.sprite = new Sprite(imageCache, ctx, this.options);
+
+    this.#sprite = new Sprite(imageCache, ctx, options);
+  }
+
+  get sprite() {
+    return this.#sprite;
   }
 
   update = () => {
-    this.sprite.move(this.direction);
+    this.#sprite.move(this.#direction);
   };
 
   render = () => {
-    this.sprite.render();
+    this.#sprite.render();
   };
 }
 
