@@ -2,6 +2,7 @@ import BaseConfig from '../types/BaseConfig.js';
 import Position from '../types/Position.js';
 
 class Base {
+  #ctx: CanvasRenderingContext2D;
   #blockSize: number;
   #topLeft: Position;
   #color: string;
@@ -9,7 +10,8 @@ class Base {
   #height: number;
   #blockLists: Position[][];
 
-  constructor(private ctx: CanvasRenderingContext2D, options: BaseConfig) {
+  constructor(ctx: CanvasRenderingContext2D, options: BaseConfig) {
+    this.#ctx = ctx;
     this.#blockSize = options.blockSize;
     this.#topLeft = options.topLeft;
     this.#color = options.color;
@@ -46,11 +48,11 @@ class Base {
   };
 
   public render = () => {
-    this.ctx.fillStyle = this.#color;
+    this.#ctx.fillStyle = this.#color;
 
     this.#blockLists.forEach((list, i) => {
       list.forEach((block, j) => {
-        this.ctx.fillRect(block.x, block.y, this.#blockSize, this.#blockSize);
+        this.#ctx.fillRect(block.x, block.y, this.#blockSize, this.#blockSize);
       });
     });
   };
