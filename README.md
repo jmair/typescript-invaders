@@ -8,4 +8,4 @@ This is an Typescript implementation of a classic video game that utilizes a 2D 
 
 #### start:
 
-`npm run serve`
+`npm run start`

@@ -42,7 +42,7 @@ class Bombardment {
     this.killPlayer = killPlayer;
   }
 
-  checkPlayerCollision = (bomb: Bomb) => {
+  #checkPlayerCollision = (bomb: Bomb) => {
     const { player } = this;
     const xDiff = bomb.sprite.position().x - player.sprite.position().x;
     const yDiff = player.sprite.position().y - bomb.sprite.position().y;
@@ -56,7 +56,7 @@ class Bombardment {
     return xAlign && yAlign;
   };
 
-  checkBaseCollision = (bomb: Bomb) => {
+  #checkBaseCollision = (bomb: Bomb) => {
     let collision = false;
     this.outpost.bases.forEach((base, i) => {
       base.blockLists.forEach((list, j) => {
@@ -76,11 +76,11 @@ class Bombardment {
     return collision;
   };
 
-  update = () => {
+  public update = () => {
     this.ticks += 1;
     if (this.ticks >= this.tickPerLaunch) {
       this.ticks = 0;
-      const canFire = this.armada.canFire();
+      const canFire = this.armada.canFire;
 
       if (this.bombs.length < canFire.length) {
         const range = canFire.length;
@@ -96,18 +96,18 @@ class Bombardment {
     // remove bombs that fall off screen
     this.bombs = this.bombs.filter((bomb) => {
       bomb.update();
-      const baseCollision = this.checkPlayerCollision(bomb);
-      const playerCollision = this.checkBaseCollision(bomb);
+      const baseCollision = this.#checkPlayerCollision(bomb);
+      const playerCollision = this.#checkBaseCollision(bomb);
       const collision = playerCollision || baseCollision;
 
-      this.checkBaseCollision(bomb);
+      this.#checkBaseCollision(bomb);
       return bomb.sprite.position().y < this.canvas.height && !collision;
     });
   };
 
-  reset = () => (this.bombs = []);
+  public reset = () => (this.bombs = []);
 
-  render = () => {
+  public render = () => {
     this.bombs.forEach((bomb) => bomb.render());
   };
 }

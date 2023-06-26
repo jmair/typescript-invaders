@@ -12,84 +12,73 @@ import Outpost from './Outpost.js';
 import Sprite from './Sprite.js';
 
 class Game {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  width: number;
-  height: number;
-  images: string[];
-  backgroundColor: string;
-  imageCache: ImageCache;
+  #ctx: CanvasRenderingContext2D;
+  #width: number;
+  #height: number;
+  #backgroundColor: string;
   player: Player;
   armada: Armada;
   laser: Laser;
   explosion: Explosion;
   outpost: Outpost;
-  maxDeadTicks: number;
-  initialPlayerLives: number;
+  maxDeadTicks = 100;
+  readonly initialPlayerLives = 3;
   bombardment: Bombardment;
   score: Score;
   playerLives: PlayerLives;
   tryAgainDialog: Dialog;
   startDialog: Dialog;
   gameOverDialog: Dialog;
-  playerDead: boolean;
+  playerDead = false;
   playerInput: Actions;
-  sprites: Sprite[];
-  gameStarted: boolean;
-  gamePaused: boolean;
-  gameOver: boolean;
-  playerDeadTicks: number;
+  sprites: Sprite[] = [];
+  gameStarted = false;
+  gamePaused = false;
+  gameOver = false;
+  playerDeadTicks = 0;
   playerCurrentLives: number;
 
   constructor(
-    canvas: HTMLCanvasElement,
-    imageCache: ImageCache,
-    options: { backgroundColor: string }
+    public canvas: HTMLCanvasElement,
+    public imageCache: ImageCache,
+    public options: { backgroundColor: string }
   ) {
-    this.canvas = canvas;
     const context2d = canvas.getContext('2d');
     if (context2d) {
-      this.ctx = context2d;
+      this.#ctx = context2d;
     } else {
       throw new Error('No canvas context found.');
     }
-    this.width = canvas.width || 1200;
-    this.height = canvas.height || 900;
-    this.backgroundColor = options.backgroundColor;
-    this.maxDeadTicks = 100;
-    this.initialPlayerLives = 3;
-    this.score = new Score(this.ctx);
-    this.outpost = new Outpost(this.ctx, this.canvas);
-    this.imageCache = imageCache;
-    this.playerDead = false;
+    this.#width = canvas.width || 1200;
+    this.#height = canvas.height || 900;
+    this.#backgroundColor = options.backgroundColor;
+    this.score = new Score(this.#ctx);
+    this.outpost = new Outpost(this.#ctx, this.canvas);
     this.playerInput = defaultActions;
-    this.sprites = [];
-    this.gameStarted = false;
-    this.gamePaused = false;
-    this.gameOver = false;
-    this.playerDeadTicks = 0;
     this.playerCurrentLives = this.initialPlayerLives;
   }
 
   init = async () => {
     new Input(this._handleInput);
-    this.explosion = new Explosion(this.imageCache, this.ctx, this.canvas);
-    this.laser = new Laser(this.imageCache, this.ctx, this.outpost);
-    this.player = new Player(this.imageCache, this.ctx, this.canvas);
+    this.explosion = new Explosion(this.imageCache, this.#ctx, this.canvas);
+    this.laser = new Laser(this.imageCache, this.#ctx, this.outpost);
+    this.player = new Player(this.imageCache, this.#ctx, this.canvas);
     this.armada = new Armada(
       this.imageCache,
-      this.ctx,
+      this.#ctx,
       this.canvas,
       this._gameOver,
       this.outpost.reset
     );
-    this.score = new Score(this.ctx);
-    this.startDialog = new Dialog(this.ctx, this.canvas, 24, [
+    this.score = new Score(this.#ctx);
+    this.startDialog = new Dialog(this.#ctx, this.canvas, 24, [
       'Press [SPACE] to start a game.',
     ]);
-    this.gameOverDialog = new Dialog(this.ctx, this.canvas, 24, ['Game Over!']);
+    this.gameOverDialog = new Dialog(this.#ctx, this.canvas, 24, [
+      'Game Over!',
+    ]);
     this.tryAgainDialog = new Dialog(
-      this.ctx,
+      this.#ctx,
       this.canvas,
       14,
       ['Press [SPACE] to try again.'],
@@ -97,14 +86,14 @@ class Game {
     );
     this.bombardment = new Bombardment(
       this.imageCache,
-      this.ctx,
+      this.#ctx,
       this.canvas,
       this.armada,
       this.player,
       this.killPlayer,
       this.outpost
     );
-    this.playerLives = new PlayerLives(this.imageCache, this.ctx, this.canvas);
+    this.playerLives = new PlayerLives(this.imageCache, this.#ctx, this.canvas);
     this.loop();
   };
 
@@ -130,16 +119,14 @@ class Game {
   };
 
   _paintBg = () => {
-    const { backgroundColor, ctx, width, height } = this;
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, width, height);
+    this.#ctx.clearRect(0, 0, this.#width, this.#height);
+    this.#ctx.fillStyle = this.#backgroundColor;
+    this.#ctx.fillRect(0, 0, this.#width, this.#height);
   };
 
   _renderOverlay = () => {
-    const { ctx, width, height } = this;
-    ctx.fillStyle = 'rgba(50, 50, 50, 0.9)';
-    ctx.fillRect(0, 0, width, height);
+    this.#ctx.fillStyle = 'rgba(50, 50, 50, 0.9)';
+    this.#ctx.fillRect(0, 0, this.#width, this.#height);
   };
 
   _playerDeadPause = () => {

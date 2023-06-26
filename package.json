@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rimraf ./dist && mkdir dist && cp ./index.html ./dist/ && cp -r ./images ./dist/ && cp -r ./css ./dist/",
     "build": "tsc --build ",
-    "serve": "npm run build && cd dist && npx static-server",
+    "start": "npm run build && cd dist && npx static-server",
     "clean": "tsc --build --clean"
   },
   "author": "Jerimiah Mair",

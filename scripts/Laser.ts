@@ -64,7 +64,7 @@ class Laser {
     const laser = this.sprite.position();
     const shipSquare = 32;
 
-    armada.positions().forEach((position, index) => {
+    armada.positions.forEach((position, index) => {
       const xDiff = laser.x - position.x;
       const yDiff = laser.y - position.y;
       const xAlign = xDiff > 0 && xDiff < shipSquare;
