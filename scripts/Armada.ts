@@ -43,6 +43,62 @@ class Armada {
     return this.#ships;
   }
 
+  get canFire(): Position[] {
+    const visible = this.#ships.filter((ship) => ship.sprite.isVisible());
+    const sortedDescPositions = visible
+      .sort((a, b) => b.sprite.position().y - a.sprite.position().y)
+      .map((ship) => ship.sprite.position());
+
+    return sortedDescPositions.filter(
+      (position, index, arr) =>
+        index === arr.findIndex((arrItem) => arrItem.x === position.x)
+    );
+  }
+
+  get positions(): Position[] {
+    return this.#ships.map((ship) => ship.sprite.position());
+  }
+
+  public init = () => {
+    const { imageCache, ctx } = this;
+    const positionedShips = this.#setInitialPositions();
+
+    positionedShips.forEach((ship) => {
+      this.#ships.push({
+        points: ship.points,
+        sprite: new Sprite(imageCache, ctx, ship.config),
+      });
+    });
+  };
+
+  public hideShip = (index: number) => {
+    this.#shipCount -= 1;
+    this.#ships[index].sprite.hide();
+  };
+
+  public update = () => {
+    this.#ticks += 1;
+
+    if (this.#ticks > this.#ticksPerMove) {
+      this.#ticks = 0;
+      this.#think();
+    }
+  };
+
+  public reset = () => {
+    this.#ships.forEach((ship, i) => {
+      ship.sprite.moveTo(this.#initalPostions[i]);
+      ship.sprite.show();
+      this.#shipCount = this.#perRow * this.#rows;
+    });
+  };
+
+  public render = () => {
+    this.#ships.forEach((ship) => {
+      ship.sprite.render();
+    });
+  };
+
   #rowImage = (row: number): string => {
     switch (row) {
       case 1:
@@ -101,18 +157,6 @@ class Armada {
     }
 
     return positionedShips;
-  };
-
-  public init = () => {
-    const { imageCache, ctx } = this;
-    const positionedShips = this.#setInitialPositions();
-
-    positionedShips.forEach((ship) => {
-      this.#ships.push({
-        points: ship.points,
-        sprite: new Sprite(imageCache, ctx, ship.config),
-      });
-    });
   };
 
   #adjustSpeedPerShipCount = () => {
@@ -186,50 +230,6 @@ class Armada {
     this.#checkBoundaries();
     this.#move();
     this.#adjustSpeedPerShipCount();
-  };
-
-  public hideShip = (index: number) => {
-    this.#shipCount -= 1;
-    this.#ships[index].sprite.hide();
-  };
-
-  get canFire(): Position[] {
-    const visible = this.#ships.filter((ship) => ship.sprite.isVisible());
-    const sortedDescPositions = visible
-      .sort((a, b) => b.sprite.position().y - a.sprite.position().y)
-      .map((ship) => ship.sprite.position());
-
-    return sortedDescPositions.filter(
-      (position, index, arr) =>
-        index === arr.findIndex((arrItem) => arrItem.x === position.x)
-    );
-  }
-
-  get positions(): Position[] {
-    return this.#ships.map((ship) => ship.sprite.position());
-  }
-
-  update = () => {
-    this.#ticks += 1;
-
-    if (this.#ticks > this.#ticksPerMove) {
-      this.#ticks = 0;
-      this.#think();
-    }
-  };
-
-  reset = () => {
-    this.#ships.forEach((ship, i) => {
-      ship.sprite.moveTo(this.#initalPostions[i]);
-      ship.sprite.show();
-      this.#shipCount = this.#perRow * this.#rows;
-    });
-  };
-
-  render = () => {
-    this.#ships.forEach((ship) => {
-      ship.sprite.render();
-    });
   };
 }
 
