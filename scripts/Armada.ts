@@ -24,14 +24,24 @@ class Armada {
   #ticks = 0;
   #ticksPerMove: number;
   #direction: Position;
+  #imageCache: ImageCache;
+  #ctx: CanvasRenderingContext2D;
+  #canvas: HTMLCanvasElement;
+  #gameOverCallback: () => void;
+  #allClearCallback: () => void;
 
   constructor(
-    private imageCache: ImageCache,
-    private ctx: CanvasRenderingContext2D,
-    private canvas: HTMLCanvasElement,
-    private gameOverCallback: () => void,
-    private allClearCallback: () => void
+    imageCache: ImageCache,
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement,
+    gameOverCallback: () => void,
+    allClearCallback: () => void
   ) {
+    this.#imageCache = imageCache;
+    this.#ctx = ctx;
+    this.#canvas = canvas;
+    this.#gameOverCallback = gameOverCallback;
+    this.#allClearCallback = allClearCallback;
     this.#shipCount = this.#perRow * this.#rows;
     this.#ticksPerMove = this.#ticksPerShip * this.#perRow * this.#rows;
     this.#direction = { x: this.#stride, y: 0 };
@@ -60,13 +70,12 @@ class Armada {
   }
 
   public init = () => {
-    const { imageCache, ctx } = this;
     const positionedShips = this.#setInitialPositions();
 
     positionedShips.forEach((ship) => {
       this.#ships.push({
         points: ship.points,
-        sprite: new Sprite(imageCache, ctx, ship.config),
+        sprite: new Sprite(this.#imageCache, this.#ctx, ship.config),
       });
     });
   };
@@ -127,7 +136,7 @@ class Armada {
     const shipWidth = 32;
     const spacing = 64;
     const armadaWidth = (this.#perRow + 1) * spacing + shipWidth;
-    const xStart = (this.canvas.width - armadaWidth) / 2;
+    const xStart = (this.#canvas.width - armadaWidth) / 2;
     const yStart = 0;
     const sheetSize = { w: 64, h: shipWidth };
     const frameCount = 2;
@@ -166,12 +175,11 @@ class Armada {
   #checkAllDestroyed = () => {
     if (this.#shipCount === 0) {
       this.reset();
-      this.allClearCallback();
+      this.#allClearCallback();
     }
   };
 
   #checkBoundaries = () => {
-    const { canvas } = this;
     let encroachR = false;
     let encroachL = false;
     let encroachPlayer = false;
@@ -181,10 +189,10 @@ class Armada {
         if (ship.sprite.position().x < this.#padding) {
           encroachL = true;
         }
-        if (ship.sprite.position().x > canvas.width - this.#padding) {
+        if (ship.sprite.position().x > this.#canvas.width - this.#padding) {
           encroachR = true;
         }
-        if (ship.sprite.position().y > canvas.height - this.#playerY) {
+        if (ship.sprite.position().y > this.#canvas.height - this.#playerY) {
           encroachPlayer = true;
         }
       }
@@ -199,7 +207,7 @@ class Armada {
     } else if (encroachPlayer) {
       this.#direction = { x: this.#stride, y: 0 };
       this.reset();
-      this.gameOverCallback();
+      this.#gameOverCallback();
     }
   };
 

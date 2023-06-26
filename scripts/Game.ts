@@ -21,6 +21,8 @@ class Game {
   #gameOverText = 'Game Over!';
   #tryAgainText = 'Press [SPACE] to try again.';
   #ctx: CanvasRenderingContext2D;
+  #canvas: HTMLCanvasElement;
+  #imageCache: ImageCache;
   #width: number;
   #height: number;
   #backgroundColor: string;
@@ -39,9 +41,9 @@ class Game {
   #playerCurrentLives: number;
 
   constructor(
-    public canvas: HTMLCanvasElement,
-    public imageCache: ImageCache,
-    public options: { backgroundColor: string }
+    canvas: HTMLCanvasElement,
+    imageCache: ImageCache,
+    options: { backgroundColor: string }
   ) {
     const context2d = canvas.getContext('2d');
     if (context2d) {
@@ -49,53 +51,55 @@ class Game {
     } else {
       throw new Error('No canvas context found.');
     }
+    this.#canvas = canvas;
+    this.#imageCache = imageCache;
     this.#width = canvas.width || 1200;
     this.#height = canvas.height || 900;
     this.#backgroundColor = options.backgroundColor;
     this.#score = new Score(this.#ctx);
-    this.#outpost = new Outpost(this.#ctx, this.canvas);
+    this.#outpost = new Outpost(this.#ctx, this.#canvas);
     this.#playerCurrentLives = this.#initialPlayerLives;
   }
 
   public init = async () => {
     new Input(this.#handleInput);
-    this.#explosion = new Explosion(this.imageCache, this.#ctx, this.canvas);
-    this.#laser = new Laser(this.imageCache, this.#ctx, this.#outpost);
-    this.#player = new Player(this.imageCache, this.#ctx, this.canvas);
+    this.#explosion = new Explosion(this.#imageCache, this.#ctx, this.#canvas);
+    this.#laser = new Laser(this.#imageCache, this.#ctx, this.#outpost);
+    this.#player = new Player(this.#imageCache, this.#ctx, this.#canvas);
     this.#armada = new Armada(
-      this.imageCache,
+      this.#imageCache,
       this.#ctx,
-      this.canvas,
+      this.#canvas,
       this.#endGame,
       this.#outpost.reset
     );
     this.#score = new Score(this.#ctx);
-    this.#startDialog = new Dialog(this.#ctx, this.canvas, 24, [
+    this.#startDialog = new Dialog(this.#ctx, this.#canvas, 24, [
       this.#startText,
     ]);
-    this.#gameOverDialog = new Dialog(this.#ctx, this.canvas, 24, [
+    this.#gameOverDialog = new Dialog(this.#ctx, this.#canvas, 24, [
       this.#gameOverText,
     ]);
     this.#tryAgainDialog = new Dialog(
       this.#ctx,
-      this.canvas,
+      this.#canvas,
       14,
       [this.#tryAgainText],
       24
     );
     this.#bombardment = new Bombardment(
-      this.imageCache,
+      this.#imageCache,
       this.#ctx,
-      this.canvas,
+      this.#canvas,
       this.#armada,
-      this.player,
+      this.#player,
       this.#killPlayer,
       this.#outpost
     );
     this.#playerLives = new PlayerLives(
-      this.imageCache,
+      this.#imageCache,
       this.#ctx,
-      this.canvas
+      this.#canvas
     );
     this.#loop();
   };
@@ -154,7 +158,7 @@ class Game {
     if (this.#playerDeadTicks > this.#maxDeadTicks) {
       this.#playerDeadTicks = 0;
       this.#playerDead = false;
-      this.player.sprite.show();
+      this.#player.sprite.show();
     }
   };
 
@@ -166,8 +170,8 @@ class Game {
       this.#playerDeadPause();
     } else {
       const playerCannon = {
-        x: this.player.position().x + this.player.width() / 2,
-        y: this.player.position().y,
+        x: this.#player.position().x + this.#player.width() / 2,
+        y: this.#player.position().y,
       };
 
       this.#laser.update(
@@ -176,7 +180,7 @@ class Game {
         this.#explosion,
         this.#score
       );
-      this.player.update(this.#playerInput);
+      this.#player.update(this.#playerInput);
       this.#armada.update();
       this.#bombardment.update();
     }
@@ -186,7 +190,7 @@ class Game {
     this.#paintBg();
     this.#explosion.render();
     this.#laser.render();
-    this.player.render();
+    this.#player.render();
     this.#armada.render();
     this.#bombardment.render();
     this.#playerLives.render(this.#playerCurrentLives);
@@ -208,8 +212,8 @@ class Game {
   #killPlayer = () => {
     this.#playerCurrentLives -= 1;
     this.#playerDead = true;
-    this.player.sprite.hide();
-    this.#explosion.sprite().moveTo(this.player.sprite.position());
+    this.#player.sprite.hide();
+    this.#explosion.sprite().moveTo(this.#player.sprite.position());
     this.#explosion.sprite().play();
   };
 
