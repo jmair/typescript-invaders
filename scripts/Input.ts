@@ -19,17 +19,17 @@ export const defaultActions = {
 };
 
 class Input {
-  callback: (actions: Actions) => void;
-  actions: Actions;
+  #callback: (actions: Actions) => void;
+  #actions: Actions;
 
   constructor(callback: (actions: Actions) => void) {
-    this.callback = callback;
-    (this.actions = defaultActions),
-      window.addEventListener('keydown', this._handleKeyEvent);
-    window.addEventListener('keyup', this._handleKeyEvent);
+    this.#callback = callback;
+    (this.#actions = defaultActions),
+      window.addEventListener('keydown', this.#handleKeyEvent);
+    window.addEventListener('keyup', this.#handleKeyEvent);
   }
 
-  _getAction = (key: string) => {
+  #getAction = (key: string) => {
     switch (key) {
       case 'a':
       case 'ArrowLeft':
@@ -44,12 +44,12 @@ class Input {
     }
   };
 
-  _handleKeyEvent = (e: KeyboardEvent) => {
+  #handleKeyEvent = (e: KeyboardEvent) => {
     if (!e.repeat) {
       const key = e.key;
-      const action = this._getAction(key);
-      this.actions[action] = e.type === 'keydown';
-      this.callback(this.actions);
+      const action = this.#getAction(key);
+      this.#actions[action] = e.type === 'keydown';
+      this.#callback(this.#actions);
     }
   };
 }
