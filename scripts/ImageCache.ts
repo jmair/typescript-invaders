@@ -1,25 +1,21 @@
 class ImageCache {
-  cache: { [tag: string]: HTMLImageElement };
+  #cache: { [tag: string]: HTMLImageElement } = {};
 
-  constructor() {
-    this.cache = {};
-  }
-
-  _cacheImages = (urls: string[]) => {
+  public cacheImages = (urls: string[]) => {
     return Promise.all(
       urls.map(async (url) => {
-        await this._loadImage(url);
+        await this.#loadImage(url);
       })
     );
   };
 
-  _loadImage = (url: string) => {
+  #loadImage = (url: string) => {
     const match = url.match(/\w+(?=\.)/g);
     if (match && match[0]) {
       const key: string = match[0];
 
       // already loaded
-      if (key && this.cache[key]) {
+      if (key && this.#cache[key]) {
         return;
       }
 
@@ -27,7 +23,7 @@ class ImageCache {
       const image = new Image();
       return new Promise((resolve, reject) => {
         image.onload = () => {
-          this.cache[key] = image;
+          this.#cache[key] = image;
           resolve(image);
         };
         image.onerror = (err) => {
@@ -39,7 +35,7 @@ class ImageCache {
   };
 
   get = (tag: string) => {
-    return this.cache[tag];
+    return this.#cache[tag];
   };
 }
 

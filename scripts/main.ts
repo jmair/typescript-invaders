@@ -25,7 +25,7 @@ const startGame = async () => {
   const gameOptions = { backgroundColor: 'black' };
 
   const imageCache = new ImageCache();
-  await imageCache._cacheImages(images);
+  await imageCache.cacheImages(images);
 
   const game = new Game(canvas, imageCache, gameOptions);
 
