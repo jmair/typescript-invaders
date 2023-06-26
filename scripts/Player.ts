@@ -41,7 +41,7 @@ class Player {
   }
 
   get position() {
-    return this.#sprite.position();
+    return this.#sprite.position;
   }
 
   get width() {
@@ -65,7 +65,7 @@ class Player {
   };
 
   #checkBounds = () => {
-    const currXPos = this.#sprite.position().x;
+    const currXPos = this.#sprite.position.x;
     return {
       left: currXPos > Player.#padding,
       right: currXPos < this.#canvas.width - Player.#padding,

@@ -56,8 +56,8 @@ class Armada {
   get canFire(): Position[] {
     const visible = this.#ships.filter((ship) => ship.sprite.isVisible());
     const sortedDescPositions = visible
-      .sort((a, b) => b.sprite.position().y - a.sprite.position().y)
-      .map((ship) => ship.sprite.position());
+      .sort((a, b) => b.sprite.position.y - a.sprite.position.y)
+      .map((ship) => ship.sprite.position);
 
     return sortedDescPositions.filter(
       (position, index, arr) =>
@@ -66,7 +66,7 @@ class Armada {
   }
 
   get positions(): Position[] {
-    return this.#ships.map((ship) => ship.sprite.position());
+    return this.#ships.map((ship) => ship.sprite.position);
   }
 
   public init = () => {
@@ -186,13 +186,13 @@ class Armada {
 
     this.#ships.forEach((ship) => {
       if (ship.sprite.isVisible()) {
-        if (ship.sprite.position().x < this.#padding) {
+        if (ship.sprite.position.x < this.#padding) {
           encroachL = true;
         }
-        if (ship.sprite.position().x > this.#canvas.width - this.#padding) {
+        if (ship.sprite.position.x > this.#canvas.width - this.#padding) {
           encroachR = true;
         }
-        if (ship.sprite.position().y > this.#canvas.height - this.#playerY) {
+        if (ship.sprite.position.y > this.#canvas.height - this.#playerY) {
           encroachPlayer = true;
         }
       }

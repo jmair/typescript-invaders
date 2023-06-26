@@ -1,33 +1,32 @@
 import Position from '../types/Position.js';
 
 class Score {
-  ctx: CanvasRenderingContext2D;
-  location: Position;
-  font: string;
-  score: 0;
-  text: 'SCORE:';
+  static #location: Position = { x: 32, y: 56 };
+  static #font = "bold 24px 'Press Start 2P'";
+  #score = 0;
+  static #text = 'SCORE:';
+  #ctx: CanvasRenderingContext2D;
 
   constructor(ctx: CanvasRenderingContext2D) {
-    this.ctx = ctx;
-    this.location = { x: 32, y: 56 };
-    this.font = "bold 24px 'Press Start 2P'";
-    this.score = 0;
-    this.text = 'SCORE:';
+    this.#ctx = ctx;
   }
 
-  update = (amount: number) => {
-    this.score += amount;
+  public update = (amount: number) => {
+    this.#score += amount;
   };
 
-  reset = () => {
-    this.score = 0;
+  public reset = () => {
+    this.#score = 0;
   };
 
-  render = () => {
-    const { ctx, font, location } = this;
-    ctx.font = font;
-    ctx.fillStyle = 'white';
-    ctx.fillText(`${this.text} ${this.score}`, location.x, location.y);
+  public render = () => {
+    this.#ctx.font = Score.#font;
+    this.#ctx.fillStyle = 'white';
+    this.#ctx.fillText(
+      `${Score.#text} ${this.#score}`,
+      Score.#location.x,
+      Score.#location.y
+    );
   };
 }
 

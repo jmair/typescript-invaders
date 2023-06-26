@@ -38,8 +38,8 @@ class Bombardment {
   }
 
   #checkPlayerCollision = (bomb: Bomb) => {
-    const xDiff = bomb.sprite.position().x - this.#player.sprite.position().x;
-    const yDiff = this.#player.sprite.position().y - bomb.sprite.position().y;
+    const xDiff = bomb.sprite.position.x - this.#player.sprite.position.x;
+    const yDiff = this.#player.sprite.position.y - bomb.sprite.position.y;
     const xAlign = xDiff > 0 && xDiff < this.#player.width;
     const yAlign = yDiff > 0 && yDiff < this.#player.height;
 
@@ -55,7 +55,7 @@ class Bombardment {
     this.#outpost.bases.forEach((base, i) => {
       base.blockLists.forEach((list, j) => {
         list.forEach((block, k) => {
-          const bombPosition = bomb.sprite.position();
+          const bombPosition = bomb.sprite.position;
           const xDiff = Math.abs(block.x - bombPosition.x);
           const yDiff = block.y - bombPosition.y;
           const xAlign = xDiff < 5;
@@ -95,7 +95,7 @@ class Bombardment {
       const collision = playerCollision || baseCollision;
 
       this.#checkBaseCollision(bomb);
-      return bomb.sprite.position().y < this.#canvas.height && !collision;
+      return bomb.sprite.position.y < this.#canvas.height && !collision;
     });
   };
 

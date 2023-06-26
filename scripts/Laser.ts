@@ -67,7 +67,7 @@ class Laser {
   };
 
   #checkIfOffScreen = () => {
-    if (this.#sprite.position().y < 0) {
+    if (this.#sprite.position.y < 0) {
       this.#moving = false;
     }
   };
@@ -77,7 +77,7 @@ class Laser {
     explosion: Explosion,
     score: Score
   ) => {
-    const laser = this.#sprite.position();
+    const laser = this.#sprite.position;
     const shipSquare = 32;
 
     armada.positions.forEach((position, index) => {
@@ -104,7 +104,7 @@ class Laser {
     this.#outpost.bases.forEach((base: Base, i: number) => {
       base.blockLists.forEach((list, j) => {
         list.forEach((block, k) => {
-          const laserPosition = this.#sprite.position();
+          const laserPosition = this.#sprite.position;
           const xDiff = Math.abs(block.x - laserPosition.x);
           const yDiff = block.y - laserPosition.y;
           const xAlign = xDiff < 5;
