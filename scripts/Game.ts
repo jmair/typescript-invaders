@@ -213,8 +213,8 @@ class Game {
     this.#playerCurrentLives -= 1;
     this.#playerDead = true;
     this.#player.sprite.hide();
-    this.#explosion.sprite().moveTo(this.#player.sprite.position());
-    this.#explosion.sprite().play();
+    this.#explosion.sprite.moveTo(this.#player.sprite.position());
+    this.#explosion.sprite.play();
   };
 
   #loop = () => {

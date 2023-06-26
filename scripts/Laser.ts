@@ -76,8 +76,8 @@ class Laser {
           score.update(armada.ships[index].points);
           this.moving = false;
           armada.hideShip(index);
-          explosion.sprite().moveTo(position);
-          explosion.sprite().play();
+          explosion.sprite.moveTo(position);
+          explosion.sprite.play();
         }
       }
     });

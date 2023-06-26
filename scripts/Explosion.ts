@@ -3,15 +3,14 @@ import ImageCache from './ImageCache.js';
 import Sprite from './Sprite.js';
 
 class Explosion {
-  config: SpriteConfig;
-  _sprite: Sprite;
+  #sprite: Sprite;
 
   constructor(
     imageCache: ImageCache,
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement
   ) {
-    this.config = {
+    const config: SpriteConfig = {
       loop: false,
       startPosition: { x: canvas.width / 2, y: canvas.height - 256 },
       tag: 'explosion',
@@ -19,13 +18,16 @@ class Explosion {
       frameCount: 3,
       ticksPerFrame: 10,
     };
-    this._sprite = new Sprite(imageCache, ctx, this.config);
+
+    this.#sprite = new Sprite(imageCache, ctx, config);
   }
 
-  sprite = () => this._sprite;
+  get sprite() {
+    return this.#sprite;
+  }
 
-  render = () => {
-    this._sprite.render();
+  public render = () => {
+    this.#sprite.render();
   };
 }
 
