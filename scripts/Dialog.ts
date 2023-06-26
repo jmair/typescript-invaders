@@ -1,10 +1,10 @@
 class Dialog {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  fontSize: number;
-  font: string;
-  topMarginPx: number;
-  text: string[];
+  #canvas: HTMLCanvasElement;
+  #ctx: CanvasRenderingContext2D;
+  #fontSize: number;
+  #fontCss: string;
+  #topMarginPx: number;
+  #text: string[];
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -13,28 +13,28 @@ class Dialog {
     text: string[],
     topMarginPx?: number
   ) {
-    this.canvas = canvas;
-    this.ctx = ctx;
-    this.fontSize = fontSizePx || 14;
-    this.font = `bold ${this.fontSize}px \'Press Start 2P\'`;
-    this.topMarginPx = topMarginPx || 0;
-    this.text = text;
+    const fontSize = fontSizePx || 14;
+
+    this.#canvas = canvas;
+    this.#ctx = ctx;
+    this.#fontSize = fontSize;
+    this.#fontCss = `bold ${fontSize}px \'Press Start 2P\'`;
+    this.#topMarginPx = topMarginPx || 0;
+    this.#text = text;
   }
 
-  render = () => {
-    const { canvas, ctx, font, fontSize, topMarginPx } = this;
-
-    this.text.forEach((line: string, index: number) => {
-      const xOffset = (line.length / 2) * this.fontSize;
-      const yOffset = index * fontSize * 1.5;
+  public render = () => {
+    this.#text.forEach((line: string, index: number) => {
+      const xOffset = (line.length / 2) * this.#fontSize;
+      const yOffset = index * this.#fontSize * 1.5;
       const location = {
-        x: canvas.width / 2 - xOffset,
-        y: canvas.height / 2 + yOffset + topMarginPx,
+        x: this.#canvas.width / 2 - xOffset,
+        y: this.#canvas.height / 2 + yOffset + this.#topMarginPx,
       };
 
-      ctx.font = font;
-      ctx.fillStyle = 'white';
-      ctx.fillText(line, location.x, location.y);
+      this.#ctx.font = this.#fontCss;
+      this.#ctx.fillStyle = 'white';
+      this.#ctx.fillText(line, location.x, location.y);
     });
   };
 }
