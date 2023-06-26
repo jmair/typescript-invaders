@@ -170,8 +170,8 @@ class Game {
       this.#playerDeadPause();
     } else {
       const playerCannon = {
-        x: this.#player.position().x + this.#player.width() / 2,
-        y: this.#player.position().y,
+        x: this.#player.position.x + this.#player.width / 2,
+        y: this.#player.position.y,
       };
 
       this.#laser.update(

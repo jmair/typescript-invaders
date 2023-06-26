@@ -40,8 +40,8 @@ class Bombardment {
   #checkPlayerCollision = (bomb: Bomb) => {
     const xDiff = bomb.sprite.position().x - this.#player.sprite.position().x;
     const yDiff = this.#player.sprite.position().y - bomb.sprite.position().y;
-    const xAlign = xDiff > 0 && xDiff < this.#player.width();
-    const yAlign = yDiff > 0 && yDiff < this.#player.height();
+    const xAlign = xDiff > 0 && xDiff < this.#player.width;
+    const yAlign = yDiff > 0 && yDiff < this.#player.height;
 
     if (xAlign && yAlign) {
       this.#killPlayer();
