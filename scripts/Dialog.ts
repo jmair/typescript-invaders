@@ -1,4 +1,4 @@
-class Dialog {
+export default class Dialog {
   #canvas: HTMLCanvasElement;
   #ctx: CanvasRenderingContext2D;
   #fontSize: number;
@@ -38,5 +38,3 @@ class Dialog {
     });
   };
 }
-
-export default Dialog;

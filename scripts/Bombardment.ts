@@ -4,7 +4,7 @@ import ImageCache from './ImageCache.js';
 import Outpost from './Outpost.js';
 import Player from './Player.js';
 
-class Bombardment {
+export default class Bombardment {
   static #xOffset = 14;
   static #yOffset = 32;
   static #ticks = 0;
@@ -105,5 +105,3 @@ class Bombardment {
     this.#bombs.forEach((bomb) => bomb.render());
   };
 }
-
-export default Bombardment;

@@ -2,7 +2,7 @@ import SpriteConfig from '../types/SpriteConfig.js';
 import ImageCache from './ImageCache.js';
 import Sprite from './Sprite.js';
 
-class PlayerLives {
+export default class PlayerLives {
   static #maxLives = 10;
   static #bottomMarginPx = 64;
   static #spriteConfig: SpriteConfig = {
@@ -43,5 +43,3 @@ class PlayerLives {
     }
   };
 }
-
-export default PlayerLives;

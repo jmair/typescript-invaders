@@ -8,7 +8,7 @@ interface PositionedShip {
   points: number;
   config: SpriteConfig;
 }
-class Armada {
+export default class Armada {
   static #playerY = 96;
   static #perRow = 11;
   static #rows = 5;
@@ -240,5 +240,3 @@ class Armada {
     this.#adjustSpeedPerShipCount();
   };
 }
-
-export default Armada;

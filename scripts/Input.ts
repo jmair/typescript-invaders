@@ -18,7 +18,7 @@ export const defaultActions = {
   [Keys.IGNORE]: false,
 };
 
-class Input {
+export default class Input {
   #callback: (actions: Actions) => void;
   #actions: Actions;
 
@@ -53,5 +53,3 @@ class Input {
     }
   };
 }
-
-export default Input;

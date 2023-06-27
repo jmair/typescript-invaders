@@ -1,7 +1,7 @@
 import BaseConfig from '../types/BaseConfig.js';
 import Position from '../types/Position.js';
 
-class Base {
+export default class Base {
   #ctx: CanvasRenderingContext2D;
   #blockSize: number;
   #topLeft: Position;
@@ -57,5 +57,3 @@ class Base {
     });
   };
 }
-
-export default Base;

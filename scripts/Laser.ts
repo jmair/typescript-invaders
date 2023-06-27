@@ -8,7 +8,7 @@ import Position from '../types/Position.js';
 import Armada from './Armada.js';
 import Base from './Base.js';
 
-class Laser {
+export default class Laser {
   static #velocity = { x: 0, y: -20 };
   #outpost: Outpost;
   #sprite: Sprite;
@@ -120,5 +120,3 @@ class Laser {
     return collision;
   };
 }
-
-export default Laser;

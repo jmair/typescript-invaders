@@ -3,7 +3,7 @@ import SheetSize from '../types/SheetSize.js';
 import SpriteConfig from '../types/SpriteConfig.js';
 import ImageCache from './ImageCache.js';
 
-class Sprite {
+export default class Sprite {
   #imageCache: ImageCache;
   #ctx: CanvasRenderingContext2D;
   #tag: string;
@@ -99,5 +99,3 @@ class Sprite {
     );
   };
 }
-
-export default Sprite;

@@ -3,7 +3,7 @@ import Sprite from './Sprite.js';
 import { Actions } from './Input.js';
 import SpriteConfig from '../types/SpriteConfig.js';
 
-class Player {
+export default class Player {
   static #speed = 4;
   static #padding = 100;
   static #spriteOptions = {
@@ -79,5 +79,3 @@ class Player {
     return vector;
   };
 }
-
-export default Player;

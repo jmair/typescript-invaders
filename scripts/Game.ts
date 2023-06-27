@@ -10,7 +10,8 @@ import Bombardment from './Bombardment.js';
 import PlayerLives from './PlayerLives.js';
 import Outpost from './Outpost.js';
 
-class Game {
+export default class Game {
+  static #instance: Game | null = null;
   static #playerDeadTicks = 0;
   static #maxDeadTicks = 100;
   static #initialPlayerLives = 3;
@@ -45,6 +46,10 @@ class Game {
     imageCache: ImageCache,
     options: { backgroundColor: string }
   ) {
+    if (Game.#instance instanceof Game) {
+      return Game.#instance;
+    }
+
     const context2d = canvas.getContext('2d');
     if (context2d) {
       this.#ctx = context2d;
@@ -59,6 +64,9 @@ class Game {
     this.#score = new Score(this.#ctx);
     this.#outpost = new Outpost(this.#ctx, this.#canvas);
     this.#playerCurrentLives = Game.#initialPlayerLives;
+
+    Object.freeze(this);
+    Game.#instance = this;
   }
 
   public init = async () => {
@@ -226,5 +234,3 @@ class Game {
     window.requestAnimationFrame(this.#loop);
   };
 }
-
-export default Game;

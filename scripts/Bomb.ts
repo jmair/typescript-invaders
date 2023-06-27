@@ -3,7 +3,7 @@ import Position from '../types/Position.js';
 import ImageCache from './ImageCache.js';
 import SpriteConfig from '../types/SpriteConfig.js';
 
-class Bomb {
+export default class Bomb {
   static #speed = 1.5;
   #direction: Position;
   #sprite: Sprite;
@@ -38,5 +38,3 @@ class Bomb {
     this.#sprite.render();
   };
 }
-
-export default Bomb;

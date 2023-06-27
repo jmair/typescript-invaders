@@ -2,7 +2,7 @@ import SpriteConfig from '../types/SpriteConfig.js';
 import ImageCache from './ImageCache.js';
 import Sprite from './Sprite.js';
 
-class Explosion {
+export default class Explosion {
   #sprite: Sprite;
 
   constructor(
@@ -30,5 +30,3 @@ class Explosion {
     this.#sprite.render();
   };
 }
-
-export default Explosion;

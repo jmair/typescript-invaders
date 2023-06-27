@@ -1,4 +1,4 @@
-class ImageCache {
+export default class ImageCache {
   #cache: { [tag: string]: HTMLImageElement } = {};
 
   public cacheImages = (urls: string[]) => {
@@ -38,5 +38,3 @@ class ImageCache {
     return this.#cache[tag];
   };
 }
-
-export default ImageCache;

@@ -1,6 +1,6 @@
 import Base from './Base.js';
 
-class Outpost {
+export default class Outpost {
   #bases: Base[] = [];
   static #baseLocations = [250, 550, 850];
   static #baseVerticalOffset = 300;
@@ -35,5 +35,3 @@ class Outpost {
     this.#bases.forEach((base) => base.render());
   };
 }
-
-export default Outpost;

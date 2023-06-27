@@ -1,6 +1,6 @@
 import Position from '../types/Position.js';
 
-class Score {
+export default class Score {
   static #location: Position = { x: 32, y: 56 };
   static #font = "bold 24px 'Press Start 2P'";
   static #text = 'SCORE:';
@@ -29,5 +29,3 @@ class Score {
     );
   };
 }
-
-export default Score;
