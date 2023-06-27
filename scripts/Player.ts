@@ -1,26 +1,20 @@
-import Position from '../types/Position.js';
-import SheetSize from '../types/SheetSize.js';
 import ImageCache from './ImageCache.js';
 import Sprite from './Sprite.js';
 import { Actions } from './Input.js';
-
-interface PlayerOptions {
-  startPosition: Position;
-  tag: string;
-  sheetSize: SheetSize;
-  frameCount: number;
-  ticksPerFrame: number;
-}
+import SpriteConfig from '../types/SpriteConfig.js';
 
 class Player {
   static #speed = 4;
   static #padding = 100;
-  static #sheetSize = { w: 64, h: 24 };
-  static #frameCount = 1;
-  static #ticksPerFrame = 5;
-  static #tag = 'hero';
+  static #spriteOptions = {
+    sheetSize: { w: 64, h: 24 },
+    frameCount: 1,
+    ticksPerFrame: 5,
+    tag: 'hero',
+  };
+
   #canvas: HTMLCanvasElement;
-  #options: PlayerOptions;
+  #options: SpriteConfig;
   #sprite: Sprite;
 
   constructor(
@@ -30,11 +24,8 @@ class Player {
   ) {
     this.#canvas = canvas;
     this.#options = {
+      ...Player.#spriteOptions,
       startPosition: { x: canvas.width / 2 - 16, y: canvas.height - 200 },
-      tag: Player.#tag,
-      sheetSize: Player.#sheetSize,
-      frameCount: Player.#frameCount,
-      ticksPerFrame: Player.#ticksPerFrame,
     };
 
     this.#sprite = new Sprite(imageCache, ctx, this.#options);

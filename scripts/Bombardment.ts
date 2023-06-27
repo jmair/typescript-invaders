@@ -5,10 +5,10 @@ import Outpost from './Outpost.js';
 import Player from './Player.js';
 
 class Bombardment {
-  #xOffset = 14;
-  #yOffset = 32;
-  #ticks = 0;
-  #tickPerLaunch = 40;
+  static #xOffset = 14;
+  static #yOffset = 32;
+  static #ticks = 0;
+  static #tickPerLaunch = 40;
   #imageCache: ImageCache;
   #ctx: CanvasRenderingContext2D;
   #canvas: HTMLCanvasElement;
@@ -71,17 +71,17 @@ class Bombardment {
   };
 
   public update = () => {
-    this.#ticks += 1;
-    if (this.#ticks >= this.#tickPerLaunch) {
-      this.#ticks = 0;
+    Bombardment.#ticks += 1;
+    if (Bombardment.#ticks >= Bombardment.#tickPerLaunch) {
+      Bombardment.#ticks = 0;
       const canFire = this.#armada.canFire;
 
       if (this.#bombs.length < canFire.length) {
         const range = canFire.length;
         const random = Math.floor(range * Math.random());
         const position = {
-          x: canFire[random].x + this.#xOffset,
-          y: canFire[random].y + this.#yOffset,
+          x: canFire[random].x + Bombardment.#xOffset,
+          y: canFire[random].y + Bombardment.#yOffset,
         };
 
         this.#bombs.push(new Bomb(this.#imageCache, this.#ctx, position));

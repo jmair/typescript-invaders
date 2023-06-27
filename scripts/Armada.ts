@@ -9,14 +9,14 @@ interface PositionedShip {
   config: SpriteConfig;
 }
 class Armada {
-  #playerY = 96;
+  static #playerY = 96;
+  static #perRow = 11;
+  static #rows = 5;
+  static #stride = 20;
+  static #padding = 100;
+  static #yShiftAmount = 32;
+  static #ticksPerShip = 2;
   #ships: Ship[] = [];
-  #perRow = 11;
-  #rows = 5;
-  #stride = 20;
-  #padding = 100;
-  #yShiftAmount = 32;
-  #ticksPerShip = 2;
   #initalPostions: Position[] = [];
   #shipCount: number;
   #shiftDown = false;
@@ -42,9 +42,9 @@ class Armada {
     this.#canvas = canvas;
     this.#gameOverCallback = gameOverCallback;
     this.#allClearCallback = allClearCallback;
-    this.#shipCount = this.#perRow * this.#rows;
-    this.#ticksPerMove = this.#ticksPerShip * this.#perRow * this.#rows;
-    this.#direction = { x: this.#stride, y: 0 };
+    this.#shipCount = Armada.#perRow * Armada.#rows;
+    this.#ticksPerMove = Armada.#ticksPerShip * Armada.#perRow * Armada.#rows;
+    this.#direction = { x: Armada.#stride, y: 0 };
 
     this.init();
   }
@@ -98,7 +98,7 @@ class Armada {
     this.#ships.forEach((ship, i) => {
       ship.sprite.moveTo(this.#initalPostions[i]);
       ship.sprite.show();
-      this.#shipCount = this.#perRow * this.#rows;
+      this.#shipCount = Armada.#perRow * Armada.#rows;
     });
   };
 
@@ -135,7 +135,7 @@ class Armada {
   #setInitialPositions = () => {
     const shipWidth = 32;
     const spacing = 64;
-    const armadaWidth = (this.#perRow + 1) * spacing + shipWidth;
+    const armadaWidth = (Armada.#perRow + 1) * spacing + shipWidth;
     const xStart = (this.#canvas.width - armadaWidth) / 2;
     const yStart = 0;
     const sheetSize = { w: 64, h: shipWidth };
@@ -144,8 +144,8 @@ class Armada {
 
     const positionedShips: PositionedShip[] = [];
 
-    for (let i = 1; i <= this.#rows; i++) {
-      for (let j = 1; j <= this.#perRow; j++) {
+    for (let i = 1; i <= Armada.#rows; i++) {
+      for (let j = 1; j <= Armada.#perRow; j++) {
         const startPosition = {
           x: xStart + spacing * j,
           y: yStart + spacing * i,
@@ -169,7 +169,7 @@ class Armada {
   };
 
   #adjustSpeedPerShipCount = () => {
-    this.#ticksPerMove = this.#shipCount * this.#ticksPerShip;
+    this.#ticksPerMove = this.#shipCount * Armada.#ticksPerShip;
   };
 
   #checkAllDestroyed = () => {
@@ -186,13 +186,13 @@ class Armada {
 
     this.#ships.forEach((ship) => {
       if (ship.sprite.isVisible()) {
-        if (ship.sprite.position.x < this.#padding) {
+        if (ship.sprite.position.x < Armada.#padding) {
           encroachL = true;
         }
-        if (ship.sprite.position.x > this.#canvas.width - this.#padding) {
+        if (ship.sprite.position.x > this.#canvas.width - Armada.#padding) {
           encroachR = true;
         }
-        if (ship.sprite.position.y > this.#canvas.height - this.#playerY) {
+        if (ship.sprite.position.y > this.#canvas.height - Armada.#playerY) {
           encroachPlayer = true;
         }
       }
@@ -200,12 +200,12 @@ class Armada {
 
     if (encroachR) {
       this.#shiftDown = true;
-      this.#direction = { x: this.#stride * -1, y: 0 };
+      this.#direction = { x: Armada.#stride * -1, y: 0 };
     } else if (encroachL) {
       this.#shiftDown = true;
-      this.#direction = { x: this.#stride, y: 0 };
+      this.#direction = { x: Armada.#stride, y: 0 };
     } else if (encroachPlayer) {
-      this.#direction = { x: this.#stride, y: 0 };
+      this.#direction = { x: Armada.#stride, y: 0 };
       this.reset();
       this.#gameOverCallback();
     }
@@ -223,7 +223,7 @@ class Armada {
         this.#ships.forEach((ship) => {
           this.#shiftDown = false;
           this.#shiftBack = true;
-          ship.sprite.move({ x: 0, y: this.#yShiftAmount });
+          ship.sprite.move({ x: 0, y: Armada.#yShiftAmount });
         });
       }
     } else {

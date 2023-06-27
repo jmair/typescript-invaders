@@ -11,12 +11,12 @@ import PlayerLives from './PlayerLives.js';
 import Outpost from './Outpost.js';
 
 class Game {
+  static #playerDeadTicks = 0;
+  static #maxDeadTicks = 100;
+  static #initialPlayerLives = 3;
   #playerDead = false;
   #gameStarted = false;
   #gameOver = false;
-  #playerDeadTicks = 0;
-  #maxDeadTicks = 100;
-  #initialPlayerLives = 3;
   #startText = 'Press [SPACE] to start a game.';
   #gameOverText = 'Game Over!';
   #tryAgainText = 'Press [SPACE] to try again.';
@@ -58,7 +58,7 @@ class Game {
     this.#backgroundColor = options.backgroundColor;
     this.#score = new Score(this.#ctx);
     this.#outpost = new Outpost(this.#ctx, this.#canvas);
-    this.#playerCurrentLives = this.#initialPlayerLives;
+    this.#playerCurrentLives = Game.#initialPlayerLives;
   }
 
   public init = async () => {
@@ -135,7 +135,7 @@ class Game {
   #endGame = () => {
     this.#gameStarted = false;
     this.#gameOver = true;
-    this.#playerCurrentLives = this.#initialPlayerLives;
+    this.#playerCurrentLives = Game.#initialPlayerLives;
     this.#armada.reset();
     this.#bombardment.reset();
     this.#outpost.reset();
@@ -153,10 +153,10 @@ class Game {
   };
 
   #playerDeadPause = () => {
-    this.#playerDeadTicks += 1;
+    Game.#playerDeadTicks += 1;
 
-    if (this.#playerDeadTicks > this.#maxDeadTicks) {
-      this.#playerDeadTicks = 0;
+    if (Game.#playerDeadTicks > Game.#maxDeadTicks) {
+      Game.#playerDeadTicks = 0;
       this.#playerDead = false;
       this.#player.sprite.show();
     }

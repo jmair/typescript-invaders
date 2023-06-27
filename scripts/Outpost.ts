@@ -4,19 +4,19 @@ class Outpost {
   #bases: Base[] = [];
   static #baseLocations = [250, 550, 850];
   static #baseVerticalOffset = 300;
+  static #style = {
+    width: 20,
+    height: 10,
+    color: '#777777',
+    blockSize: 4,
+  };
 
   constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     Outpost.#baseLocations.forEach((baseX) => {
       const baseY = canvas.height - Outpost.#baseVerticalOffset;
 
       this.#bases.push(
-        new Base(ctx, {
-          topLeft: { x: baseX, y: baseY },
-          width: 20,
-          height: 10,
-          color: '#777777',
-          blockSize: 4,
-        })
+        new Base(ctx, { ...Outpost.#style, topLeft: { x: baseX, y: baseY } })
       );
     });
   }

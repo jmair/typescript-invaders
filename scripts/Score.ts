@@ -3,9 +3,9 @@ import Position from '../types/Position.js';
 class Score {
   static #location: Position = { x: 32, y: 56 };
   static #font = "bold 24px 'Press Start 2P'";
-  #score = 0;
   static #text = 'SCORE:';
   #ctx: CanvasRenderingContext2D;
+  #score = 0;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.#ctx = ctx;

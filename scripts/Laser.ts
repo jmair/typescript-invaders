@@ -9,6 +9,7 @@ import Armada from './Armada.js';
 import Base from './Base.js';
 
 class Laser {
+  static #velocity = { x: 0, y: -20 };
   #outpost: Outpost;
   #sprite: Sprite;
   #moving: boolean;
@@ -58,7 +59,7 @@ class Laser {
 
   #moveOrResetToPlayer = (playersCannon: Position) => {
     if (this.#moving) {
-      this.#sprite.move({ x: 0, y: -20 });
+      this.#sprite.move(Laser.#velocity);
     } else {
       // if it's not moving reset it to the player's position
       this.#sprite.hide();
