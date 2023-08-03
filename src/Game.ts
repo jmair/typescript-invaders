@@ -15,6 +15,7 @@ export default class Game {
   static #playerDeadTicks = 0;
   static #maxDeadTicks = 100;
   static #initialPlayerLives = 3;
+  static #msPerUpdate = 10;
   #playerDead = false;
   #gameStarted = false;
   #gameOver = false;
@@ -40,6 +41,7 @@ export default class Game {
   #gameOverDialog: Dialog;
   #playerInput = defaultActions;
   #playerCurrentLives: number;
+  #previousUpdate: number;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -64,6 +66,7 @@ export default class Game {
     this.#score = new Score(this.#ctx);
     this.#outpost = new Outpost(this.#ctx, this.#canvas);
     this.#playerCurrentLives = Game.#initialPlayerLives;
+    this.#previousUpdate = Date.now();
 
     Object.freeze(this);
     Game.#instance = this;
@@ -226,10 +229,14 @@ export default class Game {
   };
 
   #loop = () => {
-    if (this.#gameStarted) {
-      this.#update();
+    const now = Date.now();
+    if (now - this.#previousUpdate > Game.#msPerUpdate) {
+      this.#previousUpdate = now;
+      if (this.#gameStarted) {
+        this.#update();
+      }
+      this.#render();
     }
-    this.#render();
 
     window.requestAnimationFrame(this.#loop);
   };
